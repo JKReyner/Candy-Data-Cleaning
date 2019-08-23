@@ -38,7 +38,9 @@ candy4 <- candy4[-2461,]
 ## also there are many different M&M's categories (by color) that will be dropped in favor of reducing it to simply regular and peanut M&Ms
 ## the final data set will include all candies
 
-candy5 <- subset(candy3, select = -c(2, 3, 6, 8, 9, 13, 15, 16, 20, 21, 24, 25, 26, 32, 37, 38, 39, 42, 43, 59, 60, 61, 62, 63, 64, 73, 75, 80, 86, 96, 98, 99, 101, 102))
+candy5 <- subset(candy3, select = -c(2, 3, 6, 8, 9, 13, 15, 16, 20, 21, 24, 25, 26, 32, 37, 38, 
+                                     39, 42, 43, 59, 60, 61, 62, 63, 64, 73, 75, 80, 86, 96, 98, 
+                                     99, 101, 102))
 candy5 <- candy5[-c(2461),]
 
 # make set of cleaned data
@@ -46,5 +48,46 @@ candy5 <- candy5[-c(2461),]
 candy <- data.frame(sum = colSums(x = candy5), likes = colSums(candy5 == 1), dislikes = colSums(candy5 == -1), neutral = colSums(candy5 == 0), mean = colMeans(x = candy5), median = apply(candy5, 2, median))
 
 # clean up row names
+## when plotting the graph, some of the candy names also are very long which makes margining difficult
+## those candies will have their names shortened
 
-row.names(candy) <- c("100 Grand Bar", "Black Jacks", "Bonkers", "Bottle Caps", "Butterfinger", "Cadbury Creme Eggs", "Candy Corn", "Caramellos", "Chick-o-Sticks", "Chiclets", "Coffee Crisp", "Dots", "Dove Bars", "Goo Goo Clusters", "Good N' Plenty", "Gum from baseball cards", "Gummi Bears", "Hard Candy", "Heath Bar", "Hershey's Dark Chocolate", "Hershey's Milk Chocolate", "Hershey's Kisses", "JoyJoy", "Junior Mints", "Kinder Happy Hippo", "Kit Kat", "Laffy Taffy", "Lemon Heads", "Licorice", "Black Licorice", "Lindt Truffle", "Lollipops", "Mars", "Maynards", "Mike and Ike", "Milk Duds", "Milky Way", "Regular M&Ms", "Peanut M&Ms", "Mint Kisses", "Mint Juleps", "Mr. Goodbar", "Necco Wafers", "Nerds", "Nestle Crunch", "Now'n'Laters", "Peeps", "Pixy Stix", "Reese's Peanut Butter Cups", "Reese's Pieces", "Reggie Jackson Bar", "Rolos", "Skittles", "Smarties (American)", "Smarties (Commonwealth)", "Snickers", "Sourpatch Kids", "Starburst", "SweetTarts", "Swedish Fish", "Sweetums", "Take 5", "Tic Tacs", "Circus Peanuts", "Three Musketeers", "Toblerone", "Twix", "Whatchamacallit Bar", "York Peppermint Patties")
+row.names(candy) <- c("100 Grand Bar", "Black Jacks", "Bonkers", "Bottle Caps", "Butterfinger", 
+                      "Cadbury Eggs", "Candy Corn", "Caramellos", "Chick-o-Sticks", "Chiclets", 
+                      "Coffee Crisp", "Dots", "Dove Bars", "Goo Goo Clusters", "Good N' Plenty", 
+                      "Gum", "Gummi Bears", "Hard Candy", "Heath Bar", "Hershey's (Dark)", 
+                      "Hershey's (Milk)", "Hershey's Kisses", "JoyJoy", "Junior Mints", 
+                      "Kinder Hippo", "Kit Kat", "Laffy Taffy", "Lemon Heads", "Licorice", 
+                      "Black Licorice", "Lindt Truffle", "Lollipops", "Mars", "Maynards", 
+                      "Mike and Ike", "Milk Duds", "Milky Way", "Regular M&Ms", "Peanut M&Ms", 
+                      "Mint Kisses", "Mint Juleps", "Mr. Goodbar", "Necco Wafers", "Nerds", 
+                      "Nestle Crunch", "Now'n'Laters", "Peeps", "Pixy Stix", "Reese's Cups", 
+                      "Reese's Pieces", "Reggie Jackson", "Rolos", "Skittles", "Smarties (US)", 
+                      "Smarties (CW)", "Snickers", "Sourpatch Kids", "Starburst", "SweetTarts", 
+                      "Swedish Fish", "Sweetums", "Take 5", "Tic Tacs", "Circus Peanuts", 
+                      "Three Musketeers", "Toblerone", "Twix", "Whatchamacallit", "York")
+
+# create bar plot for visualization
+
+## segment data for plotting
+subset <- t(data.frame(candy$likes, candy$dislikes, candy$neutral))
+colnames(subset) <- rownames(candy)
+rownames(subset) <- c("likes", "dislikes", "neutral")
+
+par(mar = c(9, 4, 4, 6))
+barplot(subset, names.arg = candy$Input, main = "Candy Favorability Levels", 
+        ylab = "Responses", beside = FALSE, col = c("green", "brown", "gray"), 
+        legend = c("Likes", "Dislikes", "Neutral"), 
+        args.legend = list(x = ncol(subset) + 30, bty = "n"),
+        las = 2)
+
+## create a bar plot of favorite candies in ascending order
+
+ss2 <- as.data.frame(t(subset))
+fav1 <- as.matrix(t(ss2[with(ss2, order(likes)),]))
+
+par(mar = c(9, 4, 4, 6))
+barplot(fav1, names.arg = candy$Input, main = "Candy Favorability Levels", 
+        ylab = "Responses", beside = FALSE, col = c("green", "brown", "gray"), 
+        legend = c("Likes", "Dislikes", "Neutral"), 
+        args.legend = list(x = ncol(subset) + 30, bty = "n"),
+        las = 2)

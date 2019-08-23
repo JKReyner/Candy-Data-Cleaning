@@ -57,7 +57,9 @@ candy4 <- candy4[-2461,]
 
 # remove unidentifiable or non-candy columns
 ## also there are many different M&M's categories (color) to be dropped in favor of only regular and peanut M&Ms
-## the final data set will include all candies
+## the final data set will include all identifiable candies
+## for example the original data set separates Jolly Ranchers into "good" and "bad" flavors which cannot be accurately known
+## for that reason, both types of Jolly Ranchers are to be removed
 
 ```{r}
 candy5 <- subset(candy3, select = -c(2, 3, 6, 8, 9, 13, 15, 16, 20, 21, 24, 25, 26, 32, 37, 38, 

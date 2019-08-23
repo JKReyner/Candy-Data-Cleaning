@@ -32,7 +32,7 @@ mean(candy2[,1:103])
 median(candy2[,1:103])
 ```
 
-## this is interesting as it displays a the average reaction to all candies is neutral, however it does not account for non-candy objects
+## this displays a the average reaction to all responses is neutral, however it does not account for non-candy objects
 
 ```{r}
 positive <- data.frame(react = colMeans(x = candy2) > 0)
@@ -56,7 +56,7 @@ candy4 <- candy4[-2461,]
 ```
 
 # remove unidentifiable or non-candy columns
-## also there are many different M&M's categories (by color) that will be dropped in favor of reducing it to simply regular and peanut M&Ms
+## also there are many different M&M's categories (color) to be dropped in favor of only regular and peanut M&Ms
 ## the final data set will include all candies
 
 ```{r}
